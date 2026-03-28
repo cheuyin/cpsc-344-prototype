@@ -13,7 +13,7 @@ import PlantProfilePage from './pages/PlantProfilePage';
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/cpsc-344-prototype">
       <AppProvider>
         <IPhoneFrame>
           <div className="flex-1 overflow-hidden flex flex-col">

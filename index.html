@@ -8,6 +8,16 @@
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      // Handle SPA redirect from 404.html
+      (function () {
+        var q = window.location.search;
+        var p = new URLSearchParams(q).get('p');
+        if (p) {
+          window.history.replaceState(null, '', p);
+        }
+      })();
+    </script>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
