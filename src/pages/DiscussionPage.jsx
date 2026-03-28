@@ -11,6 +11,8 @@ export default function DiscussionPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedPlant, setSelectedPlant] = useState(null);
 
+  const isSearching = searchQuery.trim() !== '' || selectedPlant !== null;
+
   const filteredThreads = useMemo(() => {
     let source = activeTab === 'my-plants' ? threads : followingThreads;
 
@@ -32,8 +34,13 @@ export default function DiscussionPage() {
       );
     }
 
+    // Show only recent threads when not searching or filtering
+    if (!isSearching && activeTab === 'my-plants') {
+      source = source.slice(0, 5);
+    }
+
     return source;
-  }, [activeTab, selectedPlant, searchQuery]);
+  }, [activeTab, selectedPlant, searchQuery, isSearching]);
 
   return (
     <div className="flex flex-col h-full bg-gray-50">
@@ -96,13 +103,22 @@ export default function DiscussionPage() {
       {/* Thread list */}
       <div className="flex-1 overflow-y-auto no-scrollbar">
         {filteredThreads.length > 0 ? (
-          filteredThreads.map((thread) => (
-            <ThreadCard
-              key={thread.id}
-              thread={thread}
-              onClick={() => navigate(`/discussion/${thread.id}`)}
-            />
-          ))
+          <>
+            {filteredThreads.map((thread) => (
+              <ThreadCard
+                key={thread.id}
+                thread={thread}
+                onClick={() => navigate(`/discussion/${thread.id}`)}
+              />
+            ))}
+            {!isSearching && activeTab === 'my-plants' && (
+              <div className="py-4 text-center">
+                <p className="text-xs text-gray-400">
+                  Showing recent discussions · Use search to find more
+                </p>
+              </div>
+            )}
+          </>
         ) : (
           <div className="flex flex-col items-center justify-center py-16 px-8 text-center">
             <div className="text-4xl mb-3">🔍</div>
