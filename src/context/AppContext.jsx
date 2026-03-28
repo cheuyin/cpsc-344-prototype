@@ -6,18 +6,18 @@ const AppContext = createContext();
 // Default schedules for initial plants
 const INITIAL_SCHEDULES = {
   'plant-1': [
-    { id: 's1', careType: 'care-water', recurrence: 'weekly', time: '9:00 AM', startDate: '2026-03-01' },
+    { id: 's1', careType: 'care-water', recurrence: 'weekly', dayOfWeek: 1, time: '9:00 AM', startDate: '2026-03-01' },
     { id: 's2', careType: 'care-fertilize', recurrence: 'monthly', time: '9:00 AM', startDate: '2026-03-01' },
   ],
   'plant-2': [
-    { id: 's3', careType: 'care-water', recurrence: 'weekly', time: '9:00 AM', startDate: '2026-03-01' },
+    { id: 's3', careType: 'care-water', recurrence: 'weekly', dayOfWeek: 1, time: '9:00 AM', startDate: '2026-03-01' },
     { id: 's4', careType: 'care-mist', recurrence: 'every3', time: '7:00 AM', startDate: '2026-03-01' },
   ],
   'plant-3': [
-    { id: 's5', careType: 'care-water', recurrence: 'biweekly', time: '9:00 AM', startDate: '2026-03-01' },
+    { id: 's5', careType: 'care-water', recurrence: 'biweekly', dayOfWeek: 1, time: '9:00 AM', startDate: '2026-03-01' },
   ],
   'plant-4': [
-    { id: 's6', careType: 'care-water', recurrence: 'biweekly', time: '9:00 AM', startDate: '2026-03-01' },
+    { id: 's6', careType: 'care-water', recurrence: 'biweekly', dayOfWeek: 1, time: '9:00 AM', startDate: '2026-03-01' },
   ],
 };
 

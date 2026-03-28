@@ -48,6 +48,7 @@ export default function CareSchedulePage() {
   const [newSchedule, setNewSchedule] = useState({
     careType: 'care-water',
     recurrence: 'weekly',
+    dayOfWeek: 1,
     time: '9:00 AM',
   });
 
@@ -64,14 +65,17 @@ export default function CareSchedulePage() {
     const dates = new Map();
     schedules.forEach((s) => {
       const preset = careSchedulePresets.find((p) => p.id === s.careType);
+      const start = s.startDate ? new Date(s.startDate + 'T00:00:00') : new Date(year, month, 1);
       for (let d = 1; d <= daysInMonth; d++) {
         const date = new Date(year, month, d);
+        if (date < start) continue;
+        const diffDays = Math.round((date - start) / (1000 * 60 * 60 * 24));
         let show = false;
         if (s.recurrence === 'daily') show = true;
-        else if (s.recurrence === 'every3') show = d % 3 === 1;
-        else if (s.recurrence === 'weekly') show = date.getDay() === 1;
-        else if (s.recurrence === 'biweekly') show = date.getDay() === 1 && (Math.ceil(d / 7) % 2 === 1);
-        else if (s.recurrence === 'monthly') show = d === 1;
+        else if (s.recurrence === 'every3') show = diffDays % 3 === 0;
+        else if (s.recurrence === 'weekly') show = date.getDay() === (s.dayOfWeek ?? 1);
+        else if (s.recurrence === 'biweekly') show = date.getDay() === (s.dayOfWeek ?? 1) && Math.floor(diffDays / 7) % 2 === 0;
+        else if (s.recurrence === 'monthly') show = date.getDate() === start.getDate();
 
         if (show && preset) {
           const key = `${year}-${month}-${d}`;
@@ -94,7 +98,7 @@ export default function CareSchedulePage() {
     ];
     setPlantSchedules(plantId, updated);
     setShowAddModal(false);
-    setNewSchedule({ careType: 'care-water', recurrence: 'weekly', time: '9:00 AM' });
+    setNewSchedule({ careType: 'care-water', recurrence: 'weekly', dayOfWeek: 1, time: '9:00 AM' });
   };
 
   const handleRemoveSchedule = (id) => {
@@ -265,7 +269,16 @@ export default function CareSchedulePage() {
                         {preset?.label}
                       </div>
                       <div className="text-[10px] text-gray-400">
-                        {RECURRENCE_OPTIONS.find((r) => r.value === s.recurrence)?.label} at {s.time}
+                        {RECURRENCE_OPTIONS.find((r) => r.value === s.recurrence)?.label}
+                        {(s.recurrence === 'weekly' || s.recurrence === 'biweekly') && s.dayOfWeek != null
+                          ? ` on ${DAYS_OF_WEEK[s.dayOfWeek]}s`
+                          : ''}
+                        {s.recurrence === 'monthly' && s.startDate
+                          ? ` on the ${new Date(s.startDate + 'T00:00:00').getDate()}${['th','st','nd','rd'][(new Date(s.startDate + 'T00:00:00').getDate() % 100 > 10 && new Date(s.startDate + 'T00:00:00').getDate() % 100 < 14) ? 0 : [0,1,2,3][new Date(s.startDate + 'T00:00:00').getDate() % 10]] || 'th'}`
+                          : ''}
+                        {s.recurrence === 'every3' && s.startDate
+                          ? `, starting ${new Date(s.startDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`
+                          : ''} at {s.time}
                       </div>
                     </div>
                     <button
@@ -358,7 +371,40 @@ export default function CareSchedulePage() {
                   </button>
                 ))}
               </div>
+              {(newSchedule.recurrence === 'every3' || newSchedule.recurrence === 'monthly') && (
+                <p className="text-[10px] text-gray-400 mt-2">
+                  Starts on the selected date:{' '}
+                  <span className="font-semibold text-gray-500">
+                    {selectedDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
+                  </span>
+                </p>
+              )}
             </div>
+
+            {(newSchedule.recurrence === 'weekly' || newSchedule.recurrence === 'biweekly') && (
+              <div className="mb-4">
+                <label className="text-xs font-semibold text-gray-600 mb-2 block">
+                  Day of week
+                </label>
+                <div className="flex gap-1.5">
+                  {DAYS_OF_WEEK.map((d, i) => (
+                    <button
+                      key={d}
+                      onClick={() =>
+                        setNewSchedule((prev) => ({ ...prev, dayOfWeek: i }))
+                      }
+                      className={`flex-1 py-2 rounded-xl text-[11px] font-medium transition-colors ${
+                        newSchedule.dayOfWeek === i
+                          ? 'bg-green-500 text-white'
+                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      }`}
+                    >
+                      {d}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
 
             <div className="mb-5">
               <label className="text-xs font-semibold text-gray-600 mb-2 block">
