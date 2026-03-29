@@ -11,6 +11,7 @@ const MONTHS = [
 ];
 
 const RECURRENCE_OPTIONS = [
+  { label: 'Once', value: 'once' },
   { label: 'Every day', value: 'daily' },
   { label: 'Every 3 days', value: 'every3' },
   { label: 'Weekly', value: 'weekly' },
@@ -76,6 +77,7 @@ export default function CareSchedulePage() {
         else if (s.recurrence === 'weekly') show = date.getDay() === (s.dayOfWeek ?? 1);
         else if (s.recurrence === 'biweekly') show = date.getDay() === (s.dayOfWeek ?? 1) && Math.floor(diffDays / 7) % 2 === 0;
         else if (s.recurrence === 'monthly') show = date.getDate() === start.getDate();
+        else if (s.recurrence === 'once') show = diffDays === 0;
 
         if (show && preset) {
           const key = `${year}-${month}-${d}`;
