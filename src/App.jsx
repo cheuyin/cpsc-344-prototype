@@ -6,6 +6,7 @@ import BottomTabs from './components/BottomTabs';
 import HomePage from './pages/HomePage';
 import DiscussionPage from './pages/DiscussionPage';
 import ThreadDetailPage from './pages/ThreadDetailPage';
+import MyPlantsPage from './pages/MyPlantsPage';
 import MessagesPage from './pages/MessagesPage';
 import ProfilePage from './pages/ProfilePage';
 import AddPlantPage from './pages/AddPlantPage';
@@ -37,6 +38,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<Navigate to="/home" replace />} />
                 <Route path="/home" element={<HomePage />} />
+                <Route path="/my-plants" element={<MyPlantsPage />} />
                 <Route path="/discussion" element={<DiscussionPage />} />
                 <Route path="/discussion/:threadId" element={<ThreadDetailPage />} />
                 <Route path="/messages" element={<MessagesPage />} />

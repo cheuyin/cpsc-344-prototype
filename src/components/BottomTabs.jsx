@@ -1,8 +1,9 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Home, MessageSquare, MessagesSquare } from 'lucide-react';
+import { Home, Leaf, MessageSquare, MessagesSquare } from 'lucide-react';
 
 const tabs = [
   { path: '/home', label: 'Home', icon: Home },
+  { path: '/my-plants', label: 'My Plants', icon: Leaf },
   { path: '/discussion', label: 'Discussion', icon: MessageSquare },
   { path: '/messages', label: 'Messages', icon: MessagesSquare },
 ];
