@@ -116,10 +116,12 @@ export default function ThreadDetailPage() {
           </span>
         </div>
 
-        {/* Answers */}
-        {thread.answers.map((answer) => (
-          <AnswerCard key={answer.id} answer={answer} />
-        ))}
+        {/* Answers – sorted by upvotes descending */}
+        {[...thread.answers]
+          .sort((a, b) => (b.upvotes - b.downvotes) - (a.upvotes - a.downvotes))
+          .map((answer) => (
+            <AnswerCard key={answer.id} answer={answer} />
+          ))}
 
         {/* Bottom spacer */}
         <div className="h-4" />
