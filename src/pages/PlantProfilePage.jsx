@@ -41,9 +41,13 @@ export default function PlantProfilePage() {
         {/* Profile info */}
         <div className="px-4 py-4">
           <div className="flex items-center gap-4 mb-3">
-            <div className="w-18 h-18 rounded-full bg-green-100 flex items-center justify-center text-4xl shrink-0">
-              {plant.emoji}
-            </div>
+            {plant.image ? (
+              <img src={plant.image} alt={plant.name} className="w-18 h-18 rounded-full object-cover shrink-0" />
+            ) : (
+              <div className="w-18 h-18 rounded-full bg-green-100 flex items-center justify-center text-4xl shrink-0">
+                {plant.emoji}
+              </div>
+            )}
             <div className="flex-1 flex justify-around text-center">
               <div>
                 <div className="text-base font-bold text-gray-900">

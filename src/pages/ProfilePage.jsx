@@ -21,6 +21,7 @@ export default function ProfilePage() {
   const myRecentPosts = feedPosts.slice(0, 6).map((p, i) => ({
     id: `my-${i}`,
     emoji: plants[i % plants.length]?.emoji || '🌱',
+    image: p.image,
     likes: Math.floor(Math.random() * 200) + 20,
     comments: Math.floor(Math.random() * 30) + 2,
   }));
@@ -44,9 +45,13 @@ export default function ProfilePage() {
           </div>
 
           <div className="flex items-center gap-4 mb-3">
-            <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center text-2xl font-bold text-green-700 shrink-0">
-              {currentUser.name.charAt(0)}
-            </div>
+            {currentUser.avatar ? (
+              <img src={currentUser.avatar} alt={currentUser.name} className="w-16 h-16 rounded-full object-cover shrink-0" />
+            ) : (
+              <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center text-2xl font-bold text-green-700 shrink-0">
+                {currentUser.name.charAt(0)}
+              </div>
+            )}
             <div className="flex-1 flex justify-around text-center">
               <div>
                 <div className="text-base font-bold text-gray-900">{currentUser.postsCount}</div>
@@ -161,9 +166,13 @@ export default function ProfilePage() {
               {myRecentPosts.map((post) => (
                 <div
                   key={post.id}
-                  className="aspect-square bg-gradient-to-br from-green-50 to-emerald-100 flex items-center justify-center relative group"
+                  className="aspect-square bg-gradient-to-br from-green-50 to-emerald-100 flex items-center justify-center relative group overflow-hidden"
                 >
-                  <div className="text-3xl">{post.emoji}</div>
+                  {post.image ? (
+                    <img src={post.image} alt="" className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="text-3xl">{post.emoji}</div>
+                  )}
                   <div className="absolute inset-0 bg-black/0 hover:bg-black/30 transition-colors flex items-center justify-center opacity-0 hover:opacity-100">
                     <div className="flex items-center gap-3 text-white text-xs font-semibold">
                       <span className="flex items-center gap-1">

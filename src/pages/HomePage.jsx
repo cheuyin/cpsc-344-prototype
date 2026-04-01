@@ -18,9 +18,15 @@ export default function HomePage() {
         {/* Profile avatar */}
         <button
           onClick={() => navigate('/profile')}
-          className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-sm font-bold text-green-700 hover:ring-2 hover:ring-green-300 transition-all"
+          className="w-8 h-8 rounded-full overflow-hidden hover:ring-2 hover:ring-green-300 transition-all"
         >
-          {currentUser.name.charAt(0)}
+          {currentUser.avatar ? (
+            <img src={currentUser.avatar} alt={currentUser.name} className="w-full h-full object-cover" />
+          ) : (
+            <div className="w-full h-full bg-green-100 flex items-center justify-center text-sm font-bold text-green-700">
+              {currentUser.name.charAt(0)}
+            </div>
+          )}
         </button>
       </div>
 
@@ -39,9 +45,13 @@ export default function HomePage() {
               <div key={i} className="flex flex-col items-center shrink-0">
                 <div className="w-14 h-14 rounded-full bg-gradient-to-br from-green-400 to-emerald-600 p-[2px]">
                   <div className="w-full h-full rounded-full bg-white p-[2px]">
-                    <div className="w-full h-full rounded-full bg-green-100 flex items-center justify-center text-lg">
-                      {post.plantEmoji}
-                    </div>
+                    {post.plantAvatar ? (
+                      <img src={post.plantAvatar} alt={post.plantAccount} className="w-full h-full rounded-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full rounded-full bg-green-100 flex items-center justify-center text-lg">
+                        {post.plantEmoji}
+                      </div>
+                    )}
                   </div>
                 </div>
                 <span className="text-[10px] text-gray-500 mt-1 max-w-[56px] truncate">
@@ -76,9 +86,13 @@ function FeedPost({ post }) {
     <div className="border-b border-gray-100">
       {/* Post header */}
       <div className="flex items-center gap-2.5 px-4 py-2.5">
-        <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-sm">
-          {post.plantEmoji}
-        </div>
+        {post.plantAvatar ? (
+          <img src={post.plantAvatar} alt={post.plantAccount} className="w-8 h-8 rounded-full object-cover" />
+        ) : (
+          <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-sm">
+            {post.plantEmoji}
+          </div>
+        )}
         <div className="flex-1">
           <div className="flex items-center gap-1">
             <span className="text-xs font-semibold text-gray-900">
